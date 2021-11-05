@@ -1,11 +1,7 @@
 from benchmark import config
-from benchmark import pillow
-from benchmark import vips
+from benchmark import render
 
-n_frames = 60 * 5
-
-
-for sink_name in ('devnull', 'ffmpeg'):
+for sink_name in ('ffmpeg', 'devnull'):
     for fps in (30, 60):
         config.fps = fps
         for w, h in [
@@ -18,5 +14,5 @@ for sink_name in ('devnull', 'ffmpeg'):
             config.frame_width = w
             config.frame_height = h
 
-            for backend in (vips, pillow):
-                with open('logs/benchmark.jsonl', 'a') as log: print(backend.render(n_frames, sink_name), file=log)
+            for backend in (render.Vips, render.Pillow):
+                with open('logs/benchmark.jsonl', 'a') as log: print(backend(sink_name).render(), file=log)

@@ -1,6 +1,5 @@
 import contextlib
 import subprocess
-import random
 
 from benchmark import config
 
@@ -25,9 +24,9 @@ def ffmpeg(fname):
         '-b:v', '3m',
         '-deinterlace',
         '-r', str(config.fps),  # output framerate
-        '-f', 'flv',
-        '-flvflags', 'no_duration_filesize',
-        f'/tmp/{fname}.flv',
+        # '-f', 'flv',
+        # '-flvflags', 'no_duration_filesize',
+        f'/tmp/benchmark/{fname}.mp4',
     )
 
     _ffmpeg = subprocess.Popen(cmd, stdin=subprocess.PIPE)

@@ -3,6 +3,8 @@ python = python3.9
 .PHONY: benchmark
 benchmark:
 	mkdir -p logs
+	mkdir -p /tmp/benchmark
+	rm -rf /tmp/benchmark/*.mp4
 	$(python) -m benchmark
 
 lint:
