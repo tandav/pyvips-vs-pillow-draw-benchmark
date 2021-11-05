@@ -17,7 +17,6 @@ def rgba_to_rgb(rgb_background, rgba_color):
     )
 
 
-
 def minmax_scaler(value, oldmin, oldmax, newmin=0.0, newmax=1.0):
     '''
     >>> minmax_scaler(50, 0, 100, 0.0, 1.0)

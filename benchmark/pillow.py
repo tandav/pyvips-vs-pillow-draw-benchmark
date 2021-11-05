@@ -7,12 +7,12 @@ import time
 from PIL import Image
 from PIL import ImageDraw
 
-from benchmark.ffmpeg import make_ffmpeg
+import benchmark.sink as _sink
 from benchmark import config
 from benchmark import util
 
 
-def render(n_frames):
+def render(n_frames, sink_name):
     layer = Image.new('RGBA', (config.frame_width, config.frame_height), (255, 255, 255, 0))
     text_color = (0, 0, 0)
 
@@ -38,7 +38,7 @@ def render(n_frames):
     chord_length = config.frame_width / 4
     t0 = time.time()
 
-    with make_ffmpeg() as ffmpeg:
+    with getattr(_sink, sink_name)() as sink:
         for frame in range(n_frames):
             x += frame_dx
             chord_i = int(x / chord_length)
@@ -59,9 +59,9 @@ def render(n_frames):
             q.text(*meta['platform'], fill=text_color)
             q.text((chord_start_px, util.rel_to_abs_h(0.75)), 'scale', fill=text_color)
             q.text((random.randrange(config.frame_width), random.randrange(config.frame_height)), random.choice(string.ascii_letters), fill=text_color)
-            ffmpeg.stdin.write(out.tobytes())
+            sink.write(out.tobytes())
 
     dt = time.time() - t0
     fps = n_frames / dt
     speed = fps / config.fps
-    return json.dumps({'backend': __name__.split('.')[1], 'dt': dt, 'fps': config.fps, 'actual_fps': fps, 'speed': speed, 'n_frames': n_frames, 'resolution': f'{config.frame_width}x{config.frame_height}', })
+    return json.dumps({'backend': __name__.split('.')[1], 'sink': sink_name, 'dt': dt, 'fps': config.fps, 'actual_fps': fps, 'speed': speed, 'n_frames': n_frames, 'resolution': f'{config.frame_width}x{config.frame_height}', })

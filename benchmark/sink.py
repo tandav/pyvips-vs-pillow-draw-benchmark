@@ -3,8 +3,9 @@ import subprocess
 
 from benchmark import config
 
+
 @contextlib.contextmanager
-def make_ffmpeg():
+def ffmpeg():
     cmd = ('ffmpeg',
            '-re',
            '-y',
@@ -64,7 +65,14 @@ def make_ffmpeg():
            '/tmp/output.flv',
            )
 
-    ffmpeg = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    yield ffmpeg
-    ffmpeg.communicate()
-    ffmpeg.wait()
+    _ffmpeg = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    yield _ffmpeg.stdin
+    _ffmpeg.communicate()
+    _ffmpeg.wait()
+
+
+@contextlib.contextmanager
+def devnull():
+    f = open('/dev/null', 'wb')
+    yield f
+    f.close()

@@ -6,11 +6,12 @@ import time
 
 import pyvips
 
-from benchmark.ffmpeg import make_ffmpeg
+import benchmark.sink as _sink
 from benchmark import config
 from benchmark import util
 
-def render(n_frames):
+
+def render(n_frames, sink_name):
     bg = pyvips.Image.black(config.frame_width, config.frame_height, bands=3)
     background_draw = pyvips.Image.black(config.frame_width, config.frame_height, bands=3)
 
@@ -33,7 +34,7 @@ def render(n_frames):
     chord_length = config.frame_width / 4
     t0 = time.time()
 
-    with make_ffmpeg() as ffmpeg:
+    with getattr(_sink, sink_name)() as sink:
 
         for frame in range(n_frames):
             x += frame_dx
@@ -92,12 +93,12 @@ def render(n_frames):
             # q_video.put(random.choice(self.images), block=True)
             # self.q_video.put(out.tobytes(), block=True)
             # out.write_to_memory()
-            ffmpeg.stdin.write(out.write_to_memory())
+            sink.write(out.write_to_memory())
 
     dt = time.time() - t0
     fps = n_frames / dt
     speed = fps / config.fps
-    return json.dumps({'backend': __name__.split('.')[1], 'dt': dt, 'fps': config.fps, 'actual_fps': fps, 'speed': speed, 'n_frames': n_frames, 'resolution': f'{config.frame_width}x{config.frame_height}', })
+    return json.dumps({'backend': __name__.split('.')[1], 'sink': sink_name, 'dt': dt, 'fps': config.fps, 'actual_fps': fps, 'speed': speed, 'n_frames': n_frames, 'resolution': f'{config.frame_width}x{config.frame_height}', })
 
     # self.q_video.put(out.write_to_memory(), block=True)
     # self.q_video.append(out.write_to_memory())
