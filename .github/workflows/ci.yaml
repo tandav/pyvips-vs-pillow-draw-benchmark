@@ -18,7 +18,8 @@ jobs:
         run: sudo apt update && sudo apt install --yes ffmpeg libvips
 
       - name: install python dependencies
-        run: python3 -m pip install pyvips Pillow
+#        run: python3 -m pip install pyvips Pillow
+        run: python3 -m pip install pyvips pillow-simd
 
       - name: benchmark
         run: make
