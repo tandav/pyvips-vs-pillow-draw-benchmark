@@ -4,7 +4,8 @@ python = python3.9
 benchmark:
 	mkdir -p logs
 	mkdir -p /tmp/benchmark
-	rm -rf /tmp/benchmark/*.mp4
+	#rm logs/benchmark.jsonl
+	#rm -rf /tmp/benchmark/*.mp4
 	$(python) -m benchmark
 
 lint:
