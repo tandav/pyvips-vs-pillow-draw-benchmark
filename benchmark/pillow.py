@@ -19,17 +19,6 @@ def render(n_frames, sink_name):
     background = Image.new('RGBA', layer.size, (200, 200, 200))
     background_draw = ImageDraw.Draw(background)
 
-    meta = {
-        'bassline': (util.rel_to_abs(0.28, 0), '101001010100101001'),
-        'rhythm_score': (util.rel_to_abs(0, 0), '0.42'),
-        'bass_decay': (util.rel_to_abs(0, 0.125), 'bass_decay0.42'),
-        'chords': (util.rel_to_abs(0, 0.25), '\n'.join(str(i) * 8 for i in range(4))),
-        'tuning': (util.rel_to_abs(0.47, 0.125), 'tuning440Hz'),
-        'root_scale': (util.rel_to_abs(0, 0.66), 'root scale: C major'),
-        'dist': (util.rel_to_abs(0.58, 0.25), 'dist42'),
-        'website': (util.rel_to_abs(0, 0.83), 'tandav.me'),
-        'platform': (util.rel_to_abs(0.47, 0.85), sys.platform),
-    }
 
     colors = [util.hex_to_rgb(config.scale_colors[scale]) for scale in config.diatonic]
     chunk_width = config.frame_width
@@ -48,17 +37,14 @@ def render(n_frames, sink_name):
             out = Image.alpha_composite(layer, background)
             q = ImageDraw.Draw(out)
 
-            q.text(*meta['bassline'], fill=text_color)
-            q.text(*meta['rhythm_score'], fill=text_color)
-            q.text(*meta['bass_decay'], fill=text_color)
-            q.text(*meta['chords'], fill=text_color)
-            q.text(*meta['tuning'], fill=text_color)
-            q.text(*meta['root_scale'], fill=text_color)
-            q.text(*meta['dist'], fill=text_color)
-            q.text(*meta['website'], fill=text_color)
-            q.text(*meta['platform'], fill=text_color)
-            q.text((chord_start_px, util.rel_to_abs_h(0.75)), 'scale', fill=text_color)
-            q.text((random.randrange(config.frame_width), random.randrange(config.frame_height)), random.choice(string.ascii_letters), fill=text_color)
+            q.text(util.random_xy(), util.random_text(), fill=text_color)
+            q.text(util.random_xy(), util.random_text(), fill=text_color)
+            q.text(util.random_xy(), util.random_text(), fill=text_color)
+            q.text(util.random_xy(), util.random_text(), fill=text_color)
+            q.text(util.random_xy(), util.random_text(), fill=text_color)
+            q.text(util.random_xy(), util.random_text(), fill=text_color)
+            q.text(util.random_xy(), util.random_text(), fill=text_color)
+            q.text(util.random_xy(), util.random_text(), fill=text_color)
             sink.write(out.tobytes())
 
     dt = time.time() - t0
