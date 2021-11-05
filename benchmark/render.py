@@ -44,11 +44,10 @@ class Vips(Render):
                 background_color = util.random_color()
 
                 for _ in range(8):
-                    x0 = random.randrange(config.frame_width)
-                    y0 = random.randrange(config.frame_height)
-                    w = random.randrange(config.frame_width - x0)
-                    h = random.randrange(config.frame_height - y0)
-                    self.background_draw = self.background_draw.draw_rect(background_color, x0, y0, w, h, fill=True)
+                    x, y = util.random_xy()
+                    w = random.randrange(config.frame_width - x)
+                    h = random.randrange(config.frame_height - y)
+                    self.background_draw = self.background_draw.draw_rect(background_color, x, y, w, h, fill=True)
 
                 out = (
                     self.bg
@@ -69,7 +68,6 @@ class Pillow(Render):
     def __init__(self, sink_name):
         super().__init__(sink_name)
         self.layer = Image.new('RGBA', (config.frame_width, config.frame_height), (255, 255, 255, 0))
-        self.text_color = (0, 0, 0)
         self.background = Image.new('RGBA', self.layer.size, (200, 200, 200))
         self.background_draw = ImageDraw.Draw(self.background)
 
@@ -80,21 +78,17 @@ class Pillow(Render):
                 background_color = (random.randrange(255), random.randrange(255), random.randrange(255))
 
                 for _ in range(8):
-                    x0 = random.randrange(config.frame_width)
-                    y0 = random.randrange(config.frame_height)
-                    x1 = random.randrange(config.frame_width)
-                    y1 = random.randrange(config.frame_height)
-                    self.background_draw.rectangle((x0, y0, x1, y1), fill=background_color)
+                    self.background_draw.rectangle((util.random_xy(), util.random_xy()), fill=background_color)
 
                 out = Image.alpha_composite(self.layer, self.background)
                 q = ImageDraw.Draw(out)
 
-                q.text(util.random_xy(), util.random_text(), fill=self.text_color)
-                q.text(util.random_xy(), util.random_text(), fill=self.text_color)
-                q.text(util.random_xy(), util.random_text(), fill=self.text_color)
-                q.text(util.random_xy(), util.random_text(), fill=self.text_color)
-                q.text(util.random_xy(), util.random_text(), fill=self.text_color)
-                q.text(util.random_xy(), util.random_text(), fill=self.text_color)
-                q.text(util.random_xy(), util.random_text(), fill=self.text_color)
-                q.text(util.random_xy(), util.random_text(), fill=self.text_color)
+                q.text(util.random_xy(), util.random_text())
+                q.text(util.random_xy(), util.random_text())
+                q.text(util.random_xy(), util.random_text())
+                q.text(util.random_xy(), util.random_text())
+                q.text(util.random_xy(), util.random_text())
+                q.text(util.random_xy(), util.random_text())
+                q.text(util.random_xy(), util.random_text())
+                q.text(util.random_xy(), util.random_text())
                 sink.write(out.tobytes())
