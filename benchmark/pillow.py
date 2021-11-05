@@ -9,8 +9,8 @@ from PIL import ImageDraw
 from PIL import ImageFont
 
 from benchmark.ffmpeg import make_ffmpeg
-from musictools import config
-from musictools import util
+from benchmark import config
+from benchmark import util
 
 
 def render(n_frames):

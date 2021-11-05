@@ -7,9 +7,8 @@ import time
 import pyvips
 
 from benchmark.ffmpeg import make_ffmpeg
-from musictools import config
-from musictools import util
-
+from benchmark import config
+from benchmark import util
 
 def render(n_frames):
     bg = pyvips.Image.black(config.frame_width, config.frame_height, bands=3)

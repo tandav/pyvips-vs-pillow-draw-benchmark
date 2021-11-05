@@ -1,6 +1,6 @@
 from benchmark import pillow
 from benchmark import vips
-from musictools import config
+from benchmark import config
 
 n_frames = 60 * 5
 

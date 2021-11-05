@@ -1,8 +1,7 @@
 import contextlib
 import subprocess
 
-from musictools import config
-
+from benchmark import config
 
 @contextlib.contextmanager
 def make_ffmpeg():
