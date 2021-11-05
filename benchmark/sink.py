@@ -1,11 +1,12 @@
 import contextlib
 import subprocess
+import random
 
 from benchmark import config
 
 
 @contextlib.contextmanager
-def ffmpeg():
+def ffmpeg(fname):
     cmd = (
         'ffmpeg',
         # '-re',
@@ -26,7 +27,7 @@ def ffmpeg():
         '-r', str(config.fps),  # output framerate
         '-f', 'flv',
         '-flvflags', 'no_duration_filesize',
-        '/tmp/output.flv',
+        f'/tmp/{fname}.flv',
     )
 
     _ffmpeg = subprocess.Popen(cmd, stdin=subprocess.PIPE)
@@ -36,7 +37,7 @@ def ffmpeg():
 
 
 @contextlib.contextmanager
-def devnull():
+def devnull(fname):
     f = open('/dev/null', 'wb')
     yield f
     f.close()

@@ -1,7 +1,5 @@
 import json
 import random
-import string
-import sys
 import time
 
 import pyvips
@@ -15,24 +13,33 @@ def render(n_frames, sink_name):
     bg = pyvips.Image.black(config.frame_width, config.frame_height, bands=3)
     background_draw = pyvips.Image.black(config.frame_width, config.frame_height, bands=3)
 
-    colors = [util.hex_to_rgb(config.scale_colors[scale]) for scale in config.diatonic]
+    # colors = [util.hex_to_rgb(config.scale_colors[scale]) for scale in config.diatonic]
     chunk_width = config.frame_width
     frame_dx = chunk_width // n_frames
     x = 0
     chord_length = config.frame_width / 4
     t0 = time.time()
 
-    with getattr(_sink, sink_name)() as sink:
+    fname = f'{__name__.split(".")[1]}-{config.frame_width}x{config.frame_height}-{config.fps}fps-{random.randint(10000, 99999)}'
+    with getattr(_sink, sink_name)(fname) as sink:
 
         for frame in range(n_frames):
             x += frame_dx
             chord_i = int(x / chord_length)
             chord_start_px = int(chord_i * chord_length)
-            background_color = random.choice(colors)
+            # background_color = random.choice(colors)
+            background_color = (random.randrange(255), random.randrange(255), random.randrange(255))
 
             # self.background_draw.rectangle((chord_start_px, 0, x + frame_dx, config.frame_height), fill=background_color)
             # self.background_draw = self.background_draw.draw_rect(background_color, chord_start_px, 0, x + frame_dx - chord_start_px, config.frame_height, fill=True)
-            background_draw = background_draw.draw_rect(background_color, chord_start_px, 0, x - chord_start_px, config.frame_height, fill=True)
+
+            # background_draw = background_draw.draw_rect(background_color, chord_start_px, 0, x - chord_start_px, config.frame_height, fill=True)
+            for _ in range(8):
+                x0 = random.randrange(config.frame_width)
+                y0 = random.randrange(config.frame_height)
+                w = random.randrange(config.frame_width - x0)
+                h = random.randrange(config.frame_height - y0)
+                background_draw = background_draw.draw_rect(background_color, x0, y0, w, h, fill=True)
 
             # out = Image.alpha_composite(layer, self.background)
             out = (
