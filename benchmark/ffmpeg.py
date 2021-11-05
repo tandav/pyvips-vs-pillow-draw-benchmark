@@ -6,22 +6,8 @@ from benchmark import config
 @contextlib.contextmanager
 def make_ffmpeg():
     cmd = ('ffmpeg',
-           # '-loglevel', 'trace',
-           # '-hwaccel', 'videotoolbox',
-           # '-threads', '2',
-           # '-threads', '7',
-           # '-y', '-r', '60', # overwrite, 60fps
            '-re',
            '-y',
-
-           # # '-err_detect', 'ignore_err',
-           # '-f', 's16le',  # means 16bit input
-           # '-acodec', 'pcm_s16le',  # means raw 16bit input
-           # '-r', str(config.sample_rate),  # the input will have 44100 Hz
-           # '-ac', '1',  # number of audio channels (mono1/stereo=2)
-           # # '-thread_queue_size', thread_queue_size,
-           # '-thread_queue_size', '1024',
-           # '-i', config.audio_pipe,
 
            '-s', f'{config.frame_width}x{config.frame_height}',  # size of image string
            '-f', 'rawvideo',

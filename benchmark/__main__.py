@@ -5,7 +5,7 @@ from benchmark import config
 n_frames = 60 * 5
 
 
-for fps in 30, 60:
+for fps in (30, 60):
     config.fps = fps
     for w, h in [
         (426, 240),

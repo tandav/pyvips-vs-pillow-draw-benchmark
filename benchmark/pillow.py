@@ -6,7 +6,6 @@ import time
 
 from PIL import Image
 from PIL import ImageDraw
-from PIL import ImageFont
 
 from benchmark.ffmpeg import make_ffmpeg
 from benchmark import config
@@ -14,7 +13,6 @@ from benchmark import util
 
 
 def render(n_frames):
-    font = ImageFont.truetype('static/fonts/SFMono-Semibold.otf', 20)
     layer = Image.new('RGBA', (config.frame_width, config.frame_height), (255, 255, 255, 0))
     text_color = (0, 0, 0)
 
@@ -50,17 +48,17 @@ def render(n_frames):
             out = Image.alpha_composite(layer, background)
             q = ImageDraw.Draw(out)
 
-            q.text(*meta['bassline'], font=font, fill=text_color)
-            q.text(*meta['rhythm_score'], font=font, fill=text_color)
-            q.text(*meta['bass_decay'], font=font, fill=text_color)
-            q.text(*meta['chords'], font=font, fill=text_color)
-            q.text(*meta['tuning'], font=font, fill=text_color)
-            q.text(*meta['root_scale'], font=font, fill=text_color)
-            q.text(*meta['dist'], font=font, fill=text_color)
-            q.text(*meta['website'], font=font, fill=text_color)
-            q.text(*meta['platform'], font=font, fill=text_color)
-            q.text((chord_start_px, util.rel_to_abs_h(0.75)), 'scale', font=font, fill=text_color)
-            q.text((random.randrange(config.frame_width), random.randrange(config.frame_height)), random.choice(string.ascii_letters), font=font, fill=text_color)
+            q.text(*meta['bassline'], fill=text_color)
+            q.text(*meta['rhythm_score'], fill=text_color)
+            q.text(*meta['bass_decay'], fill=text_color)
+            q.text(*meta['chords'], fill=text_color)
+            q.text(*meta['tuning'], fill=text_color)
+            q.text(*meta['root_scale'], fill=text_color)
+            q.text(*meta['dist'], fill=text_color)
+            q.text(*meta['website'], fill=text_color)
+            q.text(*meta['platform'], fill=text_color)
+            q.text((chord_start_px, util.rel_to_abs_h(0.75)), 'scale', fill=text_color)
+            q.text((random.randrange(config.frame_width), random.randrange(config.frame_height)), random.choice(string.ascii_letters), fill=text_color)
             ffmpeg.stdin.write(out.tobytes())
 
     dt = time.time() - t0
